@@ -68,7 +68,9 @@ $RECYCLE.BIN/
 # Build Directories
 *-BUILD/
 
-#User files
+# Qt cache
+CMakeLists.txt.user
+CMakeLists.txt.user.*
 
 # Windows Installer files
 *.cab
@@ -79,5 +81,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 *.pdf
-demo.zip
 *.zip

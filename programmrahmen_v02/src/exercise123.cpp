@@ -212,12 +212,44 @@ QColor Exercise123::getDitheringColor(QImage &image, int x, int y)
     //////////////////////////////////////////////////
     // Aufgabe 3
     //////////////////////////////////////////////////
+    float newGray;
+    QColor newGrayColor;
 
-    float oldpixel = 0.0f;
-    float newpixel = 0.0f;
+    float oldpixel = getGrayColor(getPixel(image, x, y));
 
-    //TODO: quantize oldpixel to a gray color palette with 4 entries (0.0f, 0.33f, 0.66f, 1.0f)
-    //TODO: dithering by floyd-steinberg
+    //quantize pixel
+
+    float newpixel = round(oldpixel);
+    float quantError = oldpixel - newpixel;
+
+    //Dithering by Floyd-Steinberg
+    if(x<1023){
+        newGray = getGrayColor(image.pixel(x+1, y))+quantError*7/16;
+        newGray = qBound(0.0f, newGray, 1.0f);
+        newGrayColor = QColor::fromRgbF(newGray, newGray, newGray);
+        image.setPixel(x+1, y, newGrayColor.rgb());
+    }
+
+    if(x>0 && y < 644) {
+        newGray = getGrayColor(image.pixel(x-1, y+1))+quantError*3/16;
+        newGray = qBound(0.0f, newGray, 1.0f);
+        newGrayColor = QColor::fromRgbF(newGray, newGray, newGray);
+        image.setPixel(x-1, y+1, newGrayColor.rgb());
+    }
+
+    if(y < 644) {
+        newGray = getGrayColor(image.pixel(x, y+1))+quantError*5/16;
+        newGray = qBound(0.0f, newGray, 1.0f);
+        newGrayColor = QColor::fromRgbF(newGray, newGray, newGray);
+        image.setPixel(x, y+1, newGrayColor.rgb());
+    }
+
+    if(x<1023 && y < 644) {
+        newGray = getGrayColor(image.pixel(x+1, y+1))+quantError*1/16;
+        newGray = qBound(0.0f, newGray, 1.0f);
+        newGrayColor = QColor::fromRgbF(newGray, newGray, newGray);
+        image.setPixel(x+1, y+1, newGrayColor.rgb());
+    }
 
     newpixel = qBound(0.0f, newpixel, 1.0f);
 
