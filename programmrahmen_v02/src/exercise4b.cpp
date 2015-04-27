@@ -82,7 +82,7 @@ Exercise4b::Exercise4b(QWidget *parent) :
     ImageView(parent),
     m_currentLevel(0),
     m_currentDir(1),
-    m_timer(0)
+    m_timer(nullptr)
 {
     // Render mandelbrot set (initially)
     renderMandelbrot();
