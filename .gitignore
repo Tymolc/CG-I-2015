@@ -65,6 +65,9 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+# Build Directories
+*-BUILD/
+
 # Windows Installer files
 *.cab
 *.msi
@@ -73,3 +76,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.pdf
+demo.zip
+*.zip
