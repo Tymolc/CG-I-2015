@@ -53,8 +53,6 @@ float Exercise123::getGrayColor(const QColor &color)
     //////////////////////////////////////////////////
     float gray = color.redF()*0.299 + color.greenF()*0.587 + color.blueF()*0.114;
 
-    //TODO: Implement grayscale function
-
     return gray;
 }
 
@@ -65,8 +63,6 @@ QColor Exercise123::getInvertColor(const QColor &color)
     // Aufgabe 1 (invert color)
     //////////////////////////////////////////////////
     QColor invert = QColor(255-color.red(), 255-color.green(), 255-color.blue());
-
-    //TODO: Implement invert color function
 
     return invert;
 }
