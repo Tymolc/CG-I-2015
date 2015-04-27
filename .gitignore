@@ -68,6 +68,8 @@ $RECYCLE.BIN/
 # Build Directories
 *-BUILD/
 
+#User files
+
 # Windows Installer files
 *.cab
 *.msi
