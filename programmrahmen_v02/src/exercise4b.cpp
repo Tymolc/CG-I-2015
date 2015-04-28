@@ -82,18 +82,15 @@ using namespace exercise4b;
 Exercise4b::Exercise4b(QWidget *parent) :
     ImageView(parent),
     m_currentLevel(0),
-    m_currentDir(1),
+    m_currentDir(1), //hopefully dir doesn't mean directory
     m_timer(NULL)
 {
     // Render mandelbrot set (initially)
     renderMandelbrot();
 
-    //////////////////////////////////////////////////////////////////////////////
-    // TODO: 4(b) Create a QTimer here and connect it to the slot onTimer()
-    //            (in it, update m_currentLevel to count from 0 to 12 and back)
-    //////////////////////////////////////////////////////////////////////////////
-
-    // ...
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    timer->start(500);
 }
 
 Exercise4b::~Exercise4b()
@@ -108,6 +105,7 @@ void Exercise4b::renderMandelbrot()
     int width = 800, height = 600;
     QPixmap mandelbrot(width, height);
     QPainter painter(&mandelbrot);
+    painter.setPen(Qt::NoPen);
 
     // Draw image using a quadtree
     drawRecursive(painter, 0, 0, width, height, m_currentLevel);
@@ -126,17 +124,29 @@ void Exercise4b::drawRecursive(QPainter &painter, int x, int y, int w, int h, in
     // TODO: Render Mandelbrot recursively for current level m_level
     //////////////////////////////////////////////////////////////////////////
 
-    // ...
+    float scaleX = 3.0f, scaleY = 3.0f;
+    float cx = ((float)(x + w/2 - 600) / 800) * scaleX;
+    float cy = ((float)(y + h/2 - 250) / 600) * scaleY;
+
+    if(level == 0) {
+        painter.setBrush(chooseColor(computeIterations(cx, cy), maxIterations));
+        painter.drawRect(x, y, w, h);
+    }
+    else {
+        drawRecursive(painter, x    , y    , w/2, h/2, level-1);
+        drawRecursive(painter, x    , y+h/2, w/2, h/2+1, level-1);
+        drawRecursive(painter, x+w/2, y    , w/2+1, h/2, level-1);
+        drawRecursive(painter, x+w/2, y+h/2, w/2+1, h/2+1, level-1);
+    }
 }
 
 void Exercise4b::onTimer()
 {
-    //////////////////////////////////////////////////////////////////////////
-    // TODO: count level from 0 to 12 and back (ping-pong loop)
-    //////////////////////////////////////////////////////////////////////////
-
-    // ...
-
     // Render mandelbrot with current level
+    m_currentLevel += m_currentDir;
+    if(m_currentLevel > 12)
+        m_currentDir = -1;
+    else if(m_currentLevel < 1)
+        m_currentDir = 1;
     renderMandelbrot();
 }
