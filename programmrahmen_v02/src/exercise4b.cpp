@@ -82,7 +82,7 @@ using namespace exercise4b;
 Exercise4b::Exercise4b(QWidget *parent) :
     ImageView(parent),
     m_currentLevel(0),
-    m_currentDir(1), //hopefully dir doesn't mean directory
+    m_currentDir(1),
     m_timer(NULL)
 {
     // Render mandelbrot set (initially)
@@ -105,7 +105,7 @@ void Exercise4b::renderMandelbrot()
     int width = 800, height = 600;
     QPixmap mandelbrot(width, height);
     QPainter painter(&mandelbrot);
-    painter.setPen(Qt::NoPen);
+    painter.setPen(Qt::NoPen); //to avoid having a black picture in high itterations
 
     // Draw image using a quadtree
     drawRecursive(painter, 0, 0, width, height, m_currentLevel);
@@ -144,9 +144,8 @@ void Exercise4b::onTimer()
 {
     // Render mandelbrot with current level
     m_currentLevel += m_currentDir;
-    if(m_currentLevel > 12)
-        m_currentDir = -1;
-    else if(m_currentLevel < 1)
-        m_currentDir = 1;
+    if(m_currentLevel >= 12 || m_currentLevel <= 0)
+        m_currentDir *= -1;
+
     renderMandelbrot();
 }
