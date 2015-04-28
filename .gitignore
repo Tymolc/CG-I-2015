@@ -84,3 +84,7 @@ CMakeLists.txt.user.*
 *.zip
 
 *.user
+
+programmrahmen_v02/CMakeLists.txt.user
+
+*.user
