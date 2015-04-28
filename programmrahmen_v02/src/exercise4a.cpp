@@ -38,11 +38,12 @@ int computeIterations(float cx, float cy)
 
 	float x = 0, y = 0;
 
-    //////////////////////////////////////////////////////////////////////////
-    // TODO: Compute number of iterations, stored in the variable iterationsCount
-    //////////////////////////////////////////////////////////////////////////
-
-    // ...
+    while(x*x+y*y<maxAbsSquare && iterationCount < maxIterations) {
+        float xtemp = x*x - y*y + cx;
+        y = 2*x*y + cy;
+        x = xtemp;
+        iterationCount++;
+    }
 
 	return iterationCount;
 }

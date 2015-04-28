@@ -43,17 +43,18 @@ namespace exercise4b
 int computeIterations(float cx, float cy)
 {
     float absSquare = 0;
-	int iterationCount = 0;
+    int iterationCount = 0;
 
-	float x = 0, y = 0;
+    float x = 0, y = 0;
 
-    //////////////////////////////////////////////////////////////////////////
-    // TODO: copy from implemented computeIterations() at Exercise4a
-    //////////////////////////////////////////////////////////////////////////
+    while(x*x+y*y<maxAbsSquare && iterationCount < maxIterations) {
+        float xtemp = x*x - y*y + cx;
+        y = 2*x*y + cy;
+        x = xtemp;
+        iterationCount++;
+    }
 
-    // ...
-
-	return iterationCount;
+    return iterationCount;
 }
 
 QColor chooseColor(int value, int maxValue)
