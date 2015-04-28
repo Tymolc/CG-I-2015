@@ -190,16 +190,19 @@ QColor Exercise123::getSobelColor(const QImage &image, int x, int y)
 
     // apply kernel, use getGrayColor()!
     float c = 0.0f;
+    float g = 0.0f;
     for (int yy= y-1; yy <= y+1; yy++)
     {
         for (int xx= x-1; xx <= x+1; xx++)
         {
             pixel = getPixel(image,xx,yy);
-            c+= (getGrayColor(pixel)*kernelX[i]+getGrayColor(pixel)*kernelY[i])/2;
+            c+= getGrayColor(pixel)*kernelX[i];
+            g+= getGrayColor(pixel)*kernelY[i];
             i++;
 
         }
     }
+    c = sqrt(c*c+g*g);
     c = qBound(0.0f, c, 1.0f);
 
     return QColor::fromRgbF(c, c, c);
