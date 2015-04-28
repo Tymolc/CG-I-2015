@@ -86,30 +86,31 @@ QColor Exercise123::getSharpenColor(const QImage &image, int x, int y)
     // TODO: Define filter kernel as Laplace-Operator
     //////////////////////////////////////////////////////////////////////////
 
-    int kernel[] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int kernel[] = {-1, -1, -1, -1, 9, -1, -1, -1, -1};
 
     float r = 0;
     float g = 0;
     float b = 0;
     QColor pixel;
+    int i =0;
 
     //////////////////////////////////////////////////
     // TODO: Aufgabe 2a
     //////////////////////////////////////////////////
 
     // Apply kernel
-    /*
-    for (int yy=-1; yy <= 1; yy++)
+
+    for (int yy= y-1; yy <= y+1; yy++)
     {
-        for (int xx=-1; xx <= 1; xx++)
+        for (int xx= x-1; xx <= x+1; xx++)
         {
-            pixel = getPixel(...);
-            r += ...
-            g += ...
-            b += ...
+            pixel = getPixel(image,xx,yy);
+            r += (pixel.red() / 255.0) * kernel[i];
+            g += (pixel.green() / 255.0) * kernel[i];
+            b += (pixel.blue() / 255.0) * kernel[i];
+            i++;
         }
     }
-    */
 
     clampColor(r, g, b);
 
@@ -126,18 +127,37 @@ QColor Exercise123::getGaussColor(const QImage &image, int x, int y)
     // TODO: Define filter kernel as Gauss-Operator
     //////////////////////////////////////////////////////////////////////////
 
-    int kernel[] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int kernel[] = {1, 2, 1, 2, 4, 2, 1, 2, 1};
 
     float r = 0.0;
     float g = 0.0;
     float b = 0.0;
-    
+    QColor pixel;
+    int i = 0;
+    int sum=0;
+    for(int s=0; s<(sizeof(kernel)/sizeof(*kernel));s++){
+       sum=sum+kernel[s];
+    }
     // Apply kernel
 
     //////////////////////////////////////////////////
     // TODO: Aufgabe 2b
     //////////////////////////////////////////////////
 
+    for (int yy= y-1; yy <= y+1; yy++)
+    {
+        for (int xx= x-1; xx <= x+1; xx++)
+        {
+            pixel = getPixel(image,xx,yy);
+            r += (pixel.red() / 255.0) * kernel[i];
+            g += (pixel.green() / 255.0) * kernel[i];
+            b += (pixel.blue() / 255.0) * kernel[i];
+            i++;
+        }
+    }
+    r=r/sum;
+    g=g/sum;
+    b=b/sum;
     clampColor(r, g, b);
 
     return QColor::fromRgbF(r, g, b);
@@ -152,17 +172,34 @@ QColor Exercise123::getSobelColor(const QImage &image, int x, int y)
     //////////////////////////////////////////////////////////////////////////
     // TODO: Define filter kernels as Sobel Operators for both directions
     //////////////////////////////////////////////////////////////////////////
-    int kernelX[] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
-    int kernelY[] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
-
+    int kernelY[] = {1, 2, 1, 0, 0, 0, -1, -2, -1};
+    int kernelX[] = {1, 0, -1, 2, 0, -2, 1, 0, -1};
+    int i = 0;
+    int sumx=0;
+    for(int s=0; s<(sizeof(kernelX)/sizeof(*kernelX));s++){
+       sumx=sumx+kernelX[s];
+    }
+    int sumy=0;
+    for(int s=0; s<(sizeof(kernelY)/sizeof(*kernelY));s++){
+       sumy=sumy+kernelY[s];
+    }
+    QColor pixel;
     //////////////////////////////////////////////////
     // TODO: Aufgabe 2c
     //////////////////////////////////////////////////
 
     // apply kernel, use getGrayColor()!
-
     float c = 0.0f;
+    for (int yy= y-1; yy <= y+1; yy++)
+    {
+        for (int xx= x-1; xx <= x+1; xx++)
+        {
+            pixel = getPixel(image,xx,yy);
+            c+= (getGrayColor(pixel)*kernelX[i]+getGrayColor(pixel)*kernelY[i])/2;
+            i++;
 
+        }
+    }
     c = qBound(0.0f, c, 1.0f);
 
     return QColor::fromRgbF(c, c, c);
@@ -177,25 +214,27 @@ QColor Exercise123::getMeanColorDynamicSize(const QImage &image, int x, int y, i
     float r = 0.0;
     float g = 0.0;
     float b = 0.0;
-    QColor color;
+    QColor pixel;
 
     //////////////////////////////////////////////////
     // TODO: Aufgabe 2d
     //////////////////////////////////////////////////
 
-    // Apply kernel
-    /*
-    float sum = 0.0;
-    for (int yy=-(int)kernelSize; yy <= (int)kernelSize; yy++)
+    for (int yy= y-(sqrt((float)kernelSize)-2); yy <= y+(sqrt((float)kernelSize)-2); yy++)
     {
-        for (int xx=-(int)kernelSize; xx <= (int)kernelSize; xx++)
+        for (int xx= x-(sqrt((float)kernelSize)-2); xx <= x+(sqrt((float)kernelSize)-2); xx++)
         {
-            //
+            pixel = getPixel(image,xx,yy);
+            r += (pixel.red() / 255.0);
+            g += (pixel.green() / 255.0);
+            b += (pixel.blue() / 255.0);
         }
     }
-    */
 
     // TODO: normalize
+    r=r/kernelSize;
+    g=g/kernelSize;
+    b=b/kernelSize;
 
     clampColor(r, g, b);
 
