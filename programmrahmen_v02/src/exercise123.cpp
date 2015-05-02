@@ -6,8 +6,8 @@
 // Sommersemester 2015 - Aufgabenblatt 1
 //                     - Aufgabe 1,2,3
 //
-//
-//
+// Matrikel-Nr. 1: 770496
+// Matrikel-Nr. 2: 771103
 // ======================================
 
 #include "exercise123.h"

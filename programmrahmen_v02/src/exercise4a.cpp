@@ -6,8 +6,8 @@
 // Sommersemester 2015 - Aufgabenblatt 1
 //                     - Aufgabe 4a
 //
-//
-//
+// Matrikel-Nr. 1: 770496
+// Matrikel-Nr. 2: 771103
 // ======================================
 
 #include "exercise4a.h"
@@ -104,7 +104,6 @@ void Exercise4a::renderMandelbrot()
     for (int x=0; x<width; x++)
     {
         cx = ((float)(x - origin.x()) / width)  * scaleX;
-
         for (int y=0; y<height; y++)
 		{
             cy = ((float)(y - origin.y()) / height) * scaleY;

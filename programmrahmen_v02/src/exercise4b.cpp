@@ -6,8 +6,8 @@
 // Sommersemester 2015 - Aufgabenblatt 1
 //                     - Aufgabe 4b
 //
-//
-//
+// Matrikel-Nr. 1: 770496
+// Matrikel-Nr. 2: 771103
 // ======================================
 
 #include "exercise4b.h"
@@ -31,6 +31,8 @@ using namespace Qt;
 //[-------------------------------------------------------]
 //[ Definitions                                           ]
 //[-------------------------------------------------------]
+QImage images[13]; //used to store itterations so it doesn't have to calculate them every time (the slowdown was very annoying)
+const bool fasterRender = true; //for the true mandelbrot experience change this to false
 const float maxAbsSquare = 4.0f;
 const int maxIterations  = 100;
 
@@ -86,6 +88,11 @@ Exercise4b::Exercise4b(QWidget *parent) :
     m_timer(NULL)
 {
     // Render mandelbrot set (initially)
+    if(fasterRender){
+        QImage tmp(800,600,QImage::Format_RGB16);
+        images[0] = tmp;
+    }
+
     renderMandelbrot();
 
     QTimer *timer = new QTimer(this);
@@ -121,7 +128,7 @@ void Exercise4b::renderMandelbrot()
 void Exercise4b::drawRecursive(QPainter &painter, int x, int y, int w, int h, int level)
 {
     //////////////////////////////////////////////////////////////////////////
-    // TODO: Render Mandelbrot recursively for current level m_level
+    // TODO: Render Mandelbrot recursively for current level m_currentLevel
     //////////////////////////////////////////////////////////////////////////
 
     float scaleX = 3.0f, scaleY = 3.0f;
@@ -129,9 +136,21 @@ void Exercise4b::drawRecursive(QPainter &painter, int x, int y, int w, int h, in
     float cy = ((float)(y + h/2 - 250) / 600) * scaleY;
 
     if(level == 0) {
-        painter.setBrush(chooseColor(computeIterations(cx, cy), maxIterations));
+        QColor color = chooseColor(computeIterations(cx, cy), maxIterations);
+        painter.setBrush(color);
+
+        if(fasterRender){
+            for(int i = 0; i < w; i++) {
+                for(int j = 0; j < h; j++) {
+                    if(x+i < 800 && y + j < 600)
+                        images[m_currentLevel].setPixel(x+i, y+j, color.rgb());
+                }
+            }
+        }
+
         painter.drawRect(x, y, w, h);
     }
+    //if level != 0, split every area into 4 subareas
     else {
         drawRecursive(painter, x    , y    , w/2, h/2, level-1);
         drawRecursive(painter, x    , y+h/2, w/2, h/2+1, level-1);
@@ -144,8 +163,21 @@ void Exercise4b::onTimer()
 {
     // Render mandelbrot with current level
     m_currentLevel += m_currentDir;
-    if(m_currentLevel >= 12 || m_currentLevel <= 0)
-        m_currentDir *= -1;
 
-    renderMandelbrot();
+    if(m_currentLevel >= 12 || m_currentLevel <= 0){
+        m_currentDir *= -1;
+    }
+
+    if(fasterRender){
+        if(images[m_currentLevel].isNull()) {
+            QImage tmp(800, 600, QImage::Format_RGB16);
+            images[m_currentLevel] = tmp;
+            renderMandelbrot();
+        }
+        else
+            this->setImage(images[m_currentLevel]);
+    }
+
+    else
+        renderMandelbrot();
 }
