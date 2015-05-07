@@ -23,7 +23,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QMouseEvent>
-
+#include <math.h>
 using namespace Qt;
 
 Exercise5::Exercise5(QWidget *parent) :

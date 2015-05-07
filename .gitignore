@@ -88,3 +88,5 @@ CMakeLists.txt.user.*
 programmrahmen_v02/CMakeLists.txt.user
 
 *.user
+
+excercise2/programmrahmen/src/exercise6.cpp
