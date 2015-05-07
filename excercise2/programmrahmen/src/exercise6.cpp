@@ -42,7 +42,7 @@ Exercise6::~Exercise6()
 }
 
 bool Exercise6::initialize()
-{    
+{
     if(!Painter::initialize())
         return false;
 
@@ -82,7 +82,10 @@ void Exercise6::tessellate(const Triangle &triangle, std::vector<Triangle> &tria
     //
     // Hinweis: Mit der Taste <w> kann zwischen Wireframe und normalem Dreiecksrendering umgeschaltet werden.
     //          Damit kann das Ergebnis der Tessellation einfacher Ueberprueft werden.
-
+    triangleBuffer.push_back(Triangle(triangle.x0, triangle.y0, (triangle.x0 + triangle.x1)/2, (triangle.y0 + triangle.y1)/2, (triangle.x0 + triangle.x2)/2, (triangle.y0 + triangle.y2)/2));
+    triangleBuffer.push_back(Triangle((triangle.x0 + triangle.x1)/2, (triangle.y0 + triangle.y1)/2, triangle.x1, triangle.y1, (triangle.x1 + triangle.x2)/2, (triangle.y1 + triangle.y2)/2));
+    triangleBuffer.push_back(Triangle((triangle.x1 + triangle.x2)/2, (triangle.y1 + triangle.y2)/2, triangle.x2, triangle.y2, (triangle.x2 + triangle.x0)/2, (triangle.y2 + triangle.y0)/2));
+    triangleBuffer.push_back(Triangle((triangle.x0 + triangle.x1)/2, (triangle.y0 + triangle.y1)/2, (triangle.x1 + triangle.x2)/2, (triangle.y1 + triangle.y2)/2, (triangle.x0 + triangle.x2)/2, (triangle.y0 + triangle.y2)/2));
 }
 
 void Exercise6::render()
@@ -94,6 +97,7 @@ void Exercise6::render()
     //////////////////////////////////////////////////
     
     // Nutzen Sie m_currentBuffer und drawTriangles().
+    drawTriangles(0, m_currentBuffer->size());
 }
 
 void Exercise6::drawTriangles(int start, int count)
