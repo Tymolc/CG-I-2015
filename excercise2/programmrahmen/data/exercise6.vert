@@ -32,7 +32,7 @@ out float colorValue3;
 
 float getHeight(vec2 uv)
 {
-    return texture2D(heightMap, uv).r;
+    return texture(heightMap, uv).r;
 }
 
 void main()
