@@ -32,7 +32,7 @@ out float colorValue3;
 
 float getHeight(vec2 uv)
 {
-    return texture2D(heightMap, uv).r;
+    return texture(heightMap, uv).r;
 }
 
 void main()
@@ -42,11 +42,9 @@ void main()
     //////////////////////////////////////////////////
     // TODO: Aufgabe 6b) - Weltkoordinate berechnen
     //////////////////////////////////////////////////
-    
+
     // Nutzen sie die Variable height fuer die Hoehe
     vec3 worldCoord = vec3(position.x, height, position.y);
-    
-    //worldCoord = ...
 
     gl_Position = transform * vec4(worldCoord.x, 3.0 * worldCoord.y - 0.25, worldCoord.z, 1.0);
 
@@ -55,10 +53,7 @@ void main()
     //////////////////////////////////////////////////
 
     // Statischer Farbwert
-    float colorValue = 0.0;
-
-    // TODO: Hoehe verwenden
-    colorValue = height;
+    float colorValue = height;
 
     // Farbwert zuweisen
     colorValue1 = colorValue;
