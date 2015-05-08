@@ -40,7 +40,7 @@ void main()
     //////////////////////////////////////////////////
 
     // Als Graustufenwert interpretieren
-    color = vec4(colorValue, colorValue, colorValue, 1.0);
+    color = vec4(colorValue1, colorValue2, colorValue3, 1.0);
 
     // TODO: Interpoliert
 }

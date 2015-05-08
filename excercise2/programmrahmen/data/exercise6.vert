@@ -32,7 +32,7 @@ out float colorValue3;
 
 float getHeight(vec2 uv)
 {
-    return texture(heightMap, uv).r;
+    return texture2D(heightMap, uv).r;
 }
 
 void main()
@@ -44,7 +44,7 @@ void main()
     //////////////////////////////////////////////////
     
     // Nutzen sie die Variable height fuer die Hoehe
-    vec3 worldCoord = vec3(0.0, 0.0, 0.0);
+    vec3 worldCoord = vec3(position.x, height, position.y);
     
     //worldCoord = ...
 
@@ -58,7 +58,7 @@ void main()
     float colorValue = 0.0;
 
     // TODO: Hoehe verwenden
-    //colorValue = ...
+    colorValue = height;
 
     // Farbwert zuweisen
     colorValue1 = colorValue;

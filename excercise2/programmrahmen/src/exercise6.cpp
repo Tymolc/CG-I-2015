@@ -67,21 +67,6 @@ void Exercise6::transferGeometryToGPU()
 
 void Exercise6::tessellate(const Triangle &triangle, std::vector<Triangle> &triangleBuffer)
 {
-    //////////////////////////////////////////////////
-    // TODO: Aufgabe 6a) - tessellieren
-    //////////////////////////////////////////////////
-
-    // Tessellieren Sie das gegebene Dreieck triangle:
-    // Vertex 0 => triangle.x0, triangle.y0
-    // Vertex 1 => triangle.x1, triangle.y1
-    // Vertex 2 => triangle.x2, triangle.y2
-    // Nutzen Sie triangleBuffer.push_back() um dem Ausgabeparameter triangleBuffer
-    // die neuen Dreiecke hinzuzufuegen.
-    // Beachten Sie, dass für die korrekte Darstellung der (neuen) Dreiecke die Vertices
-    // im Uhrzeigersinn orientiert sein muessen.
-    //
-    // Hinweis: Mit der Taste <w> kann zwischen Wireframe und normalem Dreiecksrendering umgeschaltet werden.
-    //          Damit kann das Ergebnis der Tessellation einfacher Ueberprueft werden.
     triangleBuffer.push_back(Triangle(triangle.x0, triangle.y0, (triangle.x0 + triangle.x1)/2, (triangle.y0 + triangle.y1)/2, (triangle.x0 + triangle.x2)/2, (triangle.y0 + triangle.y2)/2));
     triangleBuffer.push_back(Triangle((triangle.x0 + triangle.x1)/2, (triangle.y0 + triangle.y1)/2, triangle.x1, triangle.y1, (triangle.x1 + triangle.x2)/2, (triangle.y1 + triangle.y2)/2));
     triangleBuffer.push_back(Triangle((triangle.x1 + triangle.x2)/2, (triangle.y1 + triangle.y2)/2, triangle.x2, triangle.y2, (triangle.x2 + triangle.x0)/2, (triangle.y2 + triangle.y0)/2));
@@ -90,13 +75,6 @@ void Exercise6::tessellate(const Triangle &triangle, std::vector<Triangle> &tria
 
 void Exercise6::render()
 {
-    //////////////////////////////////////////////////
-    // TODO: Aufgabe 6a) - drawTriangles
-    //
-    // Hinweis: Hier kann neben der Lösung der Aufgabe auch mit den beiden Parametern von drawTriangles experimentiert werden, um das verhalten von OpenGL zu erkunden.
-    //////////////////////////////////////////////////
-    
-    // Nutzen Sie m_currentBuffer und drawTriangles().
     drawTriangles(0, m_currentBuffer->size());
 }
 
@@ -109,7 +87,6 @@ void Exercise6::drawTriangles(int start, int count)
         transferGeometryToGPU();
         m_update = false;
     }
-
     glDrawArrays(GL_TRIANGLES, start * 3, count * 3);
 
     m_vao.release();
