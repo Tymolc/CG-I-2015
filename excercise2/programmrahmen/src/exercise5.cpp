@@ -72,10 +72,6 @@ void Exercise5::resizeEvent(QResizeEvent *event)
 */
 void Exercise5::mouseReleaseEvent(QMouseEvent *event)
 {
-    //////////////////////////////////////////////////
-    // TODO: Aufgabe 5
-    //////////////////////////////////////////////////
-
     // Left mouse button
     if (event->button() == Qt::LeftButton) {
         m_metaballs.push_back(event->pos());
@@ -104,10 +100,6 @@ void Exercise5::renderMetaballs()
     static const QColor outerColor = QColor(0, 0, 0);
     static const QColor interColor = QColor(255, 0, 255);
     static const QColor innerColor = QColor(255, 255, 255);
-
-    //////////////////////////////////////////////////
-    // TODO: Aufgabe 5
-    //////////////////////////////////////////////////
 
     // Get image size
     int w = contentsRect().width();

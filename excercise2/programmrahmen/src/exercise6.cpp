@@ -94,8 +94,6 @@ void Exercise6::drawTriangles(int start, int count)
 
 void Exercise6::onTimer()
 {
-    //std::cout << "onTimer()" << std::endl;
-
     if(m_tessellationDepth == 0)
     {
         m_currentBuffer = &m_triangles;
