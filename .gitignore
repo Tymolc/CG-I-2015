@@ -89,4 +89,8 @@ programmrahmen_v02/CMakeLists.txt.user
 
 *.user
 
-excercise2/programmrahmen/src/exercise6.cpp
+CMakeFiles/
+glm/
+excercise4/programmrahmen/CMakeCache.txt
+excercise4/programmrahmen/cmake_install.cmake
+*.cbp
