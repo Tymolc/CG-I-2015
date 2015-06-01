@@ -52,36 +52,34 @@ QMatrix4x4 Exercise12::rotateClockwise(int frame)
     transform.setToIdentity();
 
     switch((int)(frame/180)){
-    case 0:{ //top-right edge
-        //angle in radians
-        angle = ((float)((frame+45)/360.0f)*(2.0f*M_PI));
-        //translate in a circular motion
-        transform.translate(0.5f-cos(angle)/sqrt(2), 0.5f+sin(angle)/sqrt(2), 0.0f);
-        //rotate around z-axis
-        transform.rotate(frame, 0, 0, -1);
-        break;
+        case 0:{ //top-right edge
+            //angle in radians
+            angle = ((float)((frame+45)/360.0f)*(2.0f*M_PI));
+            //translate in a circular motion
+            transform.translate(0.5f-cos(angle)/sqrt(2), 0.5f+sin(angle)/sqrt(2), 0.0f);
+            //rotate around z-axis
+            transform.rotate(frame, 0, 0, -1);
+            break;
+        }
+        case 1: {//bottom-right edge
+            angle = ((float)(frame+135)/360.0f*(2.0f*M_PI));
+            transform.translate(0.5f+cos(angle)/sqrt(2), -0.5f-sin(angle)/sqrt(2), 0.0f);
+            transform.rotate(frame, 0, 0, -1);
+            break;
+        }
+        case 2: {//bottom-left edge
+            angle = ((float)(frame+225)/360.0f*(2.0f*M_PI));
+            transform.translate(-0.5f-cos(angle)/sqrt(2), -0.5f+sin(angle)/sqrt(2), 0.0f);
+            transform.rotate(frame, 0, 0, -1);
+            break;
+        }
+        case 3: {//top-left edge
+            angle = ((float)(frame+315)/360.0f*(2.0f*M_PI));
+            transform.translate(-0.5f+cos(angle)/sqrt(2), 0.5f-sin(angle)/sqrt(2), 0.0f);
+            transform.rotate(frame, 0, 0, -1);
+            break;
+        }
     }
-    case 1: {//bottom-right edge
-        angle = ((float)(frame+135)/360.0f*(2.0f*M_PI));
-        transform.translate(0.5f+cos(angle)/sqrt(2), -0.5f-sin(angle)/sqrt(2), 0.0f);
-        transform.rotate(frame, 0, 0, -1);
-        break;
-    }
-    case 2: {//bottom-left edge
-        angle = ((float)(frame+225)/360.0f*(2.0f*M_PI));
-        transform.translate(-0.5f-cos(angle)/sqrt(2), -0.5f+sin(angle)/sqrt(2), 0.0f);
-        transform.rotate(frame, 0, 0, -1);
-        break;
-    }
-    case 3: {//top-left edge
-        angle = ((float)(frame+315)/360.0f*(2.0f*M_PI));
-        transform.translate(-0.5f+cos(angle)/sqrt(2), 0.5f-sin(angle)/sqrt(2), 0.0f);
-        transform.rotate(frame, 0, 0, -1);
-        break;
-    }
-    }
-
-
     return transform;
 }
 

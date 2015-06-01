@@ -93,7 +93,26 @@ QMatrix4x4 Exercise14::interpolateQuaternion(const float t)
     // - hint: use QMatrix4x4::rotate calls for applying the rotation(s)
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-    QMatrix4x4 result;
+    QMatrix4x4 result, A, B;
+    A.rotate(m_angles0[0], 1, 0, 0);
+    A.rotate(m_angles0[1], 0, 1, 0);
+    A.rotate(m_angles0[2], 0, 0, 1);
+
+    B.rotate(m_angles1[0], 1, 0, 0);
+    B.rotate(m_angles1[1], 0, 1, 0);
+    B.rotate(m_angles1[2], 0, 0, 1);
+
+    float quatA[4], quatB[4];
+    quat(quatA, A.data());
+    quat(quatB, B.data());
+
+    float quatResult[4];
+    slerp(quatResult, quatA, quatB, t);
+
+    float angle, axis[3];
+    axisAngle(angle, axis, quatResult);
+
+    result.rotate(angle, axis[0], axis[1], axis[2]);
 
     return result;
 }
@@ -130,19 +149,18 @@ void Exercise14::slerp(
     const float b[4],
     const float & t)
 {
-    float dotProd = a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3] + a[4]*b[4];
-    float angle = acos(dotProd);
-
-    float sinAngle = sin(angle);
-
-    //don't interpolate for sin(angle)=0
-    if(sinAngle==0){
-    for(int i = 0; i < 4; i++)
-        result[i] = a[i];
-    return;
+    float angle = acos(a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3]);
+    if(fabs(angle) < std::numeric_limits<float>::epsilon()){
+        //if the angle is too small use linear interpolation
+        for(int i = 0; i < 4; i++)
+            lerp(result[i], a[i], b[i], t);
     }
-
-
+    else{
+        float multA = sin((1-t)*angle)/sin(angle);
+        float multB = sin(t*angle)/sin(angle);
+        for(int i = 0; i < 4; i++)
+            result[i] = multA * a[i] + multB * b[i];
+    }
 }
 
 void Exercise14::lerp(
