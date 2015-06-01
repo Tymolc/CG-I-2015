@@ -87,6 +87,7 @@ QMatrix4x4 Exercise13::applyBallTransformation(const int frame)
 
     QMatrix4x4 scale(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     if(y < -1.05f){
+      //this scales y 1 for y = -1.05 and d for y = -1.05-r
       scale.scale(1, 3.033*y + 4.185, 1);
     }
 

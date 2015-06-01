@@ -70,6 +70,14 @@ QMatrix4x4 Exercise14::interpolateEuler(const float t)
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     QMatrix4x4 result;
+    float x, y, z;
+    lerp(x, m_angles0[0], m_angles1[0], t);
+    lerp(y, m_angles0[1], m_angles1[1], t);
+    lerp(z, m_angles0[2], m_angles1[2], t);
+
+    result.rotate(x, 1, 0, 0);
+    result.rotate(y, 0, 1, 0);
+    result.rotate(z, 0, 0, 1);
 
     return result;
 }
@@ -98,7 +106,20 @@ QMatrix4x4 Exercise14::interpolateMatrix(const float t)
     // - hint: use the lerp method (to be defined below)
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-    QMatrix4x4 result;
+    QMatrix4x4 result, A, B;
+
+    A.rotate(m_angles0[0], 1, 0, 0);
+    A.rotate(m_angles0[1], 0, 1, 0);
+    A.rotate(m_angles0[2], 0, 0, 1);
+
+    B.rotate(m_angles1[0], 1, 0, 0);
+    B.rotate(m_angles1[1], 0, 1, 0);
+    B.rotate(m_angles1[2], 0, 0, 1);
+
+    for (int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++)
+            lerp(result(i,j), A(i,j), B(i,j), t);
+    }
 
     return result;
 }
@@ -109,11 +130,19 @@ void Exercise14::slerp(
     const float b[4],
     const float & t)
 {
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO: Aufgabe 14
-    // - Implement the slerp function.
-    // - Keep in mind, that sin(x) might equal zero. Handle that case appropriately.
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+    float dotProd = a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3] + a[4]*b[4];
+    float angle = acos(dotProd);
+
+    float sinAngle = sin(angle);
+
+    //don't interpolate for sin(angle)=0
+    if(sinAngle==0){
+    for(int i = 0; i < 4; i++)
+        result[i] = a[i];
+    return;
+    }
+
+
 }
 
 void Exercise14::lerp(
@@ -122,10 +151,7 @@ void Exercise14::lerp(
     const float & b,
     const float & t)
 {
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO: Aufgabe 14
-    // - Implement a linear interpolation between a and b as a function of t.
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+    result = (1-t)*a + t*b;
 }
 
 bool Exercise14::initialize()
