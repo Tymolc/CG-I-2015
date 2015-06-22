@@ -46,10 +46,13 @@ void Exercise16::setupViews()
     // Use [1] to [7] to switch cameras (1: perspective, 2-7: orthogonal).
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // m_views[0].lookAt(..);
-    // ...
-    //resize(640, 480);
-    //m_views[0].lookAt(QVector3D(0,0,0), QVector3D(1,1,1), QVector3D(1, 1, 1));
+    resize(640, 480);
+    m_views[0].lookAt(QVector3D(0,0,6), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
+    m_views[1].lookAt(QVector3D(0,0,-6), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
+    m_views[2].lookAt(QVector3D(6,0,0), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
+    m_views[3].lookAt(QVector3D(-6,0,0), QVector3D(0, 0, 0), QVector3D(0, 1, 0));
+    m_views[4].lookAt(QVector3D(0,6,0), QVector3D(0, 0, 0), QVector3D(0, 0, -1));
+    m_views[5].lookAt(QVector3D(0,-6,0), QVector3D(0, 0, 0), QVector3D(0, 0, 1));
 }
 
 void Exercise16::resize(int width, int height)
@@ -62,9 +65,8 @@ void Exercise16::resize(int width, int height)
     // Find appropriate values for near and farplane. Keep the aspect ratio in mind.
     /////////////////////////////////////////////////////////////////////////////////////////////////
     float aspectRatio = (float)width/(float)height;
-    QRectF rect = QRectF(QPointF(aspectRatio, 1), QPointF(-aspectRatio, -1));
-    printf("%d / %d = %f\n", width, height, aspectRatio);
-    m_orthoProjection.ortho(rect);
+    m_orthoProjection = QMatrix4x4(); //clean up m_orthoProjection
+    m_orthoProjection.ortho(-aspectRatio, aspectRatio, -1.0f, 1.0f, 0.1f, 120.0f);
 }
 
 const QString Exercise16::hints() const

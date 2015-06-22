@@ -11,8 +11,8 @@
 // Diese Datei bearbeiten.
 //
 // Bearbeiter
-// Matr.-Nr: xxxxx
-// Matr.-Nr: xxxxx
+// Matr.-Nr: 771103
+// Matr.-Nr: 770496
 //
 // ======================================
 
@@ -36,12 +36,26 @@ out vec3 normal;
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 void main()
-{
+{   
     for (int i=0; i < 3; ++i)
     {
         normal = normalize(geom_normal[i]);
         vertex = gl_in[i].gl_Position;
         gl_Position = viewprojection * vertex;
+
+        //rotation
+        float s = sin(360*animationFrame);
+        float c = cos(360*animationFrame);
+        float oc = 1.0 - c;
+        /*rotation = mat4(oc*normal.x*normal.x+c,             oc*normal.x*normal.y-normal.z*s,    oc*normal.z*normal.x+normal.y*s, 0.0,
+                    oc*normal.x*normal.y+normal.z*s,    oc*normal.y*normal.y+c,             oc*normal.y*normal.z-normal.x*s, 0.0,
+                    oc*normal.x*normal.z-normal.y*s,    oc*normal.y*normal.z-normal.x*s,    oc*normal.z*normal.z+c, 0.0,
+                    0.0, 0.0, 0.0, 1.0);*/
+        mat3 rotation = mat3(c, -s, 0, s, c, 0, 0, 0, 1);
+        normal = normal + (rotation * normal * animationFrame);
+
+        float distance = 1;
+        gl_Position.xyz = gl_Position.xyz + normal * animationFrame * distance;
 	
         EmitVertex();
     }

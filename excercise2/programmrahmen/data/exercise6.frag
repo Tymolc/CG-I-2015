@@ -16,9 +16,9 @@
 //
 // ======================================
 
-flat in float colorValue1;
+/*flat*/ in float colorValue1;
 in float colorValue2;
-noperspective in float colorValue3;
+/*noperspective*/ in float colorValue3;
 
 out vec4 color;
 
