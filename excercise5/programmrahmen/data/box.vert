@@ -63,7 +63,7 @@ vec3 pinch(vec3 v, float pinchPlateau)
     if(v[0] > 0)
         v[0] = min(v[0], maxX);
     else
-        v[0] = min(v[0], -maxX);
+        v[0] = max(v[0], -maxX);
     return v;
 }
 
@@ -76,17 +76,16 @@ vec3 twist(vec3 v, float maxAngle)
     // Tip: Use overallObjectDimensions to get the extents of the x, y and z dimension
     // Tip: Keep in mind that the box is located in the coordinate system origin
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    //calculate starting angle
-    float startAngle = atan(v[0]/v[2]);
-    //calculate radius of rotation
-    float radius = v[0] / sin(startAngle);
 
-    float turningAngle = maxAngle * 3.14159/10 * (v[1]/overallObjectDimensions[1] + 0.5f);
 
-    float endAngle = startAngle + turningAngle;
+    float turningAngle = maxAngle * (v[1]/overallObjectDimensions[1] + 0.5f);
+    mat3 rotationmatrix= mat3(cos(turningAngle), 0.0f, sin(turningAngle),
+                                           0.0f, 1.0f,              0.0f,
+                              -sin(turningAngle), 0.0f, cos(turningAngle));
 
-    v[0] = radius * sin(endAngle);
-    v[2] = radius * cos(endAngle);
+    v = v * rotationmatrix;
+
+
     return v;
 }
 
