@@ -47,6 +47,11 @@ void main()
 
         EmitVertex();
     }
+    normal = normalize(geom_normal[0]);
+    vertex = gl_in[0].gl_Position;
+    gl_Position = viewprojection * vertex;
+
+    EmitVertex();
 
 
     EndPrimitive();
