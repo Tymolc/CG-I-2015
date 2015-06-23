@@ -53,7 +53,7 @@ bool Exercise18::initialize()
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_CULL_FACE);
-    glIsEnabled(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
     

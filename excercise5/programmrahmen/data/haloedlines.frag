@@ -31,6 +31,6 @@ void main()
     // TODO: Aufgabe 18, part 5
     // Adjust the color depending on the depth of the vertex.
     /////////////////////////////////////////////////////////////////////////////////////////////////
-
-    out_color = vec4(color.xyz, color.w);
+    float distcolor = 1 - (gl_FragCoord.z-0.90)*10;
+    out_color = vec4(distcolor, distcolor, distcolor, 1);
 }
