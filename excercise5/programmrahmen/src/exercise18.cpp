@@ -9,8 +9,8 @@
 // Diese Datei bearbeiten.
 //
 // Bearbeiter
-// Matr.-Nr: xxxxx
-// Matr.-Nr: xxxxx
+// Matr.-Nr: 771103
+// Matr.-Nr: 770496
 //
 // ======================================
 
@@ -50,8 +50,12 @@ bool Exercise18::initialize()
     m_drawable->setMode(GL_TRIANGLES);
     m_drawable->createVAO(m_program.data());
 
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_CULL_FACE);
+    glIsEnabled(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+
     
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO: Aufgabe 18, part 1
@@ -82,14 +86,15 @@ void Exercise18::render()
     // Tip: Use glColorMask(), glLineWidth(), m_drawable->draw(*this)
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     // pass 1
-    //glLineWidth(...);
+    glLineWidth(8.0f*m_animationFrame);
 
-    //m_drawable->draw(*this);
+    m_drawable->draw(*this);
 
     // pass 2
-    //glLineWidth(...);
+    glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
+    glLineWidth(3.0f*m_animationFrame);
 
-    //m_drawable->draw(*this);
+    m_drawable->draw(*this);
 }

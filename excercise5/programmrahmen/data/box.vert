@@ -11,8 +11,8 @@
 // Diese Datei bearbeiten.
 //
 // Bearbeiter
-// Matr.-Nr: xxxxx
-// Matr.-Nr: xxxxx
+// Matr.-Nr: 771103
+// Matr.-Nr: 770496
 //
 // ======================================
 
@@ -40,6 +40,9 @@ vec3 mold(vec3 v, float moldPlateau)
     // Tip: Keep in mind that the box is located in the coordinate system origin
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    float angle = atan(v[2], v[0]);
+    angle = 1.0 - (1 - moldPlateau) * abs(v[0]) * abs(sin(angle));
+    v[2] *= angle;
     return v;
 }
 
@@ -55,6 +58,12 @@ vec3 pinch(vec3 v, float pinchPlateau)
     // Tip: Keep in mind that the box is located in the coordinate system origin
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    float maxX = (1.0 - (1 - pinchPlateau) * (v[1]/overallObjectDimensions[1]+0.5f));
+
+    if(v[0] > 0)
+        v[0] = min(v[0], maxX);
+    else
+        v[0] = min(v[0], -maxX);
     return v;
 }
 
@@ -67,7 +76,17 @@ vec3 twist(vec3 v, float maxAngle)
     // Tip: Use overallObjectDimensions to get the extents of the x, y and z dimension
     // Tip: Keep in mind that the box is located in the coordinate system origin
     /////////////////////////////////////////////////////////////////////////////////////////////////
+    //calculate starting angle
+    float startAngle = atan(v[0]/v[2]);
+    //calculate radius of rotation
+    float radius = v[0] / sin(startAngle);
 
+    float turningAngle = maxAngle * 3.14159/10 * (v[1]/overallObjectDimensions[1] + 0.5f);
+
+    float endAngle = startAngle + turningAngle;
+
+    v[0] = radius * sin(endAngle);
+    v[2] = radius * cos(endAngle);
     return v;
 }
 
@@ -81,6 +100,14 @@ vec3 bend(vec3 v, float maxAngle)
     // Tip: Keep in mind that the box is located in the coordinate system origin
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    float bendAngle = 3.14159/3 * maxAngle * (v[1] / overallObjectDimensions[1] + 0.5f);
+
+    float cosAngle = cos(bendAngle);
+    float sinAngle = sin(bendAngle);
+
+    float tmp = v[1];
+    v[1] = cosAngle * tmp - sinAngle * v[0];
+    v[0] = sinAngle * tmp + cosAngle * v[0];
     return v;
 }
 

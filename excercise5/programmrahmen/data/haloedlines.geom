@@ -23,7 +23,7 @@ layout (triangles) in;
 // Adjust the primitive type and number of max_vertices to create lines.
 // Tip: Use primitive type "line_strip"
 /////////////////////////////////////////////////////////////////////////////////////////////////
-layout (triangle_strip, max_vertices = 3) out;
+layout (line_strip, max_vertices = 2) out;
 
 uniform mat4 viewprojection;
 uniform float animationFrame;
@@ -39,7 +39,7 @@ void main()
     // TODO: Aufgabe 18, part 4
     // Adjust the creation of the new vertices to create lines.
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    for (int i=0; i < 3; ++i)
+    for (int i=0; i < 2; ++i)
     {
         normal = normalize(geom_normal[i]);
         vertex = gl_in[i].gl_Position;

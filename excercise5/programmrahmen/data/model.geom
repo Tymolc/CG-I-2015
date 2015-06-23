@@ -37,25 +37,48 @@ out vec3 normal;
 
 void main()
 {   
+    vec4 center = vec4(0,0,0,0);
+
+    for (int i=0; i < 3; ++i) {
+        vertex = gl_in[i].gl_Position;
+
+        center += vertex;
+    }
+
+    center = vec4(center.x/3, center.y/3, center.z/3, vertex.w/3);
+
     for (int i=0; i < 3; ++i)
     {
         normal = normalize(geom_normal[i]);
         vertex = gl_in[i].gl_Position;
-        gl_Position = viewprojection * vertex;
 
         //rotation
-        float s = sin(360*animationFrame);
-        float c = cos(360*animationFrame);
-        float oc = 1.0 - c;
-        /*rotation = mat4(oc*normal.x*normal.x+c,             oc*normal.x*normal.y-normal.z*s,    oc*normal.z*normal.x+normal.y*s, 0.0,
-                    oc*normal.x*normal.y+normal.z*s,    oc*normal.y*normal.y+c,             oc*normal.y*normal.z-normal.x*s, 0.0,
-                    oc*normal.x*normal.z-normal.y*s,    oc*normal.y*normal.z-normal.x*s,    oc*normal.z*normal.z+c, 0.0,
-                    0.0, 0.0, 0.0, 1.0);*/
-        mat3 rotation = mat3(c, -s, 0, s, c, 0, 0, 0, 1);
-        normal = normal + (rotation * normal * animationFrame);
+        float s = sin(radians(360.0) * animationFrame);
+        float c = cos(radians(360.0) * animationFrame);
 
-        float distance = 1;
-        gl_Position.xyz = gl_Position.xyz + normal * animationFrame * distance;
+        mat4 transUp = mat4(1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            -center.x, -center.y, -center.z, 1);
+        mat4 rotation = mat4(c, s, 0, 0,
+                             -s, c, 0, 0,
+                             0, 0, 1, 0,
+                             0, 0, 0, 1);
+        mat4 transDown = mat4(1, 0, 0, 0,
+                            0, 1, 0, 0,
+                            0, 0, 1, 0,
+                            center.x, center.y, center.z, 1);
+
+        //translation
+        mat4 translation = mat4(1, 0, 0, 0,
+                                0, 1, 0, 0,
+                                0, 0, 1, 0,
+                                normal.x * animationFrame, normal.y * animationFrame, normal.z * animationFrame, 1);
+
+        vertex = transDown * rotation * transUp * vertex;
+        vertex = translation * vertex;
+
+        gl_Position = viewprojection * vertex;
 	
         EmitVertex();
     }
